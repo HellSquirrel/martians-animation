@@ -5,6 +5,7 @@ import MartiansPNG from "./images/martians.png";
 import MartiansProgressiveJPG from "./images/martians.progressive.jpg";
 import MartiansWEBP from "./images/martians.webp";
 import MartiansVIDEO from "./images/martians.av1.mp4";
+import CatJPG from "./images/cat.jpg";
 import CatWEBP from "./images/cat.webp";
 import CatVIDEO from "./images/cat.av1.mp4";
 
@@ -39,8 +40,12 @@ const Images = () => (
       <video muted autoPlay playsInline src={MartiansVIDEO} />
     </div>
     <div className="plate">
+      Cat JPG
+      <img src={CatJPG} />
+    </div>
+    <div className="plate">
       Cat webp
-      <img src={CatWEBP} className="catWebp" />
+      <img src={CatWEBP} />
     </div>
     <div className="plate">
       Cat video
