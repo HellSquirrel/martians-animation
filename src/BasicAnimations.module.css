@@ -1,0 +1,100 @@
+.basicAnimations {
+  padding: 20px;
+}
+
+.martians {
+  width: 300px;
+  height: 300px;
+  overflow: visible;
+}
+
+:global(#alien-eye) {
+  transition: fill 300ms ease-in-out;
+}
+
+.run :global(#alien-eye) {
+  fill: #bd090e;
+}
+
+.run :global(#alien) {
+  animation: running-alien 4s linear forwards;
+}
+
+.run :global(#human) {
+  animation: running-human 4s linear forwards;
+  transform-origin: 100% 0;
+}
+
+.run :global(#human) path + path {
+  animation: running-human-fill 200ms 3.3s ease-in-out forwards;
+}
+
+:global(#human) {
+  transform: translate(100%, 0);
+}
+
+@keyframes running-alien {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  10% {
+    transform: translate(20%, -10%);
+  }
+
+  20% {
+    transform: translate(40%, 0%);
+  }
+
+  30% {
+    transform: translate(60%, -10%);
+  }
+
+  40% {
+    transform: translate(80%, 0%);
+  }
+
+  50% {
+    transform: translate(100%, -10%);
+  }
+
+  60% {
+    transform: translate(120%, 0%);
+  }
+
+  70% {
+    transform: translate(140%, -10%);
+  }
+
+  80% {
+    transform: translate(160%, 0%);
+  }
+
+  90% {
+    transform: translate(180%, -10%);
+  }
+
+  100% {
+    transform: translate(200%, 0%);
+  }
+}
+
+@keyframes running-human {
+  0% {
+    transform: translate(100%, 0);
+  }
+
+  100% {
+    transform: translate(240%, 0%);
+  }
+}
+
+@keyframes running-human-fill {
+  0% {
+    fill: #e1cbb5;
+  }
+
+  100% {
+    fill: #9ea538;
+  }
+}

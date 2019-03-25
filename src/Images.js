@@ -49,7 +49,7 @@ const Images = () => (
     </div>
     <div className="plate">
       Cat video
-      <video muted autoPlay playsinline src={CatVIDEO} />
+      <video muted autoPlay playsInline src={CatVIDEO} />
     </div>
   </div>
 );
