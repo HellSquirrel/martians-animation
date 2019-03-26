@@ -1,4 +1,3 @@
-// @flow
 import React, { useState } from "react";
 import classNames from "classnames/bind";
 import cs from "./BasicAnimations.module.css";

@@ -8,25 +8,20 @@
   overflow: visible;
 }
 
-:global(#alien-eye) {
-  transition: fill 300ms ease-in-out;
+.run :global(#alien-eye) {
+  animation: running-eye 4s ease-in-out infinite;
 }
 
-.run :global(#alien-eye) {
-  fill: #bd090e;
+.run :global(#human-eye) {
+  animation: running-eye-human 4s ease-in-out infinite;
 }
 
 .run :global(#alien) {
-  animation: running-alien 4s linear forwards;
+  animation: running-alien 4s linear infinite;
 }
 
 .run :global(#human) {
-  animation: running-human 4s linear forwards;
-  transform-origin: 100% 0;
-}
-
-.run :global(#human) path + path {
-  animation: running-human-fill 200ms 3.3s ease-in-out forwards;
+  animation: running-human 4s linear infinite;
 }
 
 :global(#human) {
@@ -38,44 +33,52 @@
     transform: translate(0, 0);
   }
 
-  10% {
+  5% {
     transform: translate(20%, -10%);
   }
 
-  20% {
+  10% {
     transform: translate(40%, 0%);
   }
 
-  30% {
+  15% {
     transform: translate(60%, -10%);
   }
 
-  40% {
+  20% {
     transform: translate(80%, 0%);
   }
 
-  50% {
+  25% {
     transform: translate(100%, -10%);
   }
 
-  60% {
+  30% {
     transform: translate(120%, 0%);
   }
 
-  70% {
+  35% {
     transform: translate(140%, -10%);
   }
 
-  80% {
+  40% {
     transform: translate(160%, 0%);
   }
 
-  90% {
+  45% {
     transform: translate(180%, -10%);
   }
 
-  100% {
+  50% {
     transform: translate(200%, 0%);
+  }
+
+  60% {
+    transform: translate(200%, 0%) rotateY(180deg);
+  }
+
+  100% {
+    transform: translate(0%, 0%) rotateY(180deg);
   }
 }
 
@@ -84,17 +87,76 @@
     transform: translate(100%, 0);
   }
 
+  50% {
+    transform: translate(250%, 0%);
+  }
+
+  60% {
+    transform: translate(250%, 0) rotateY(-180deg);
+  }
+
+  65% {
+    transform: translate(230%, -5%) rotateY(-180deg);
+  }
+
+  70% {
+    transform: translate(210%, 0) rotateY(-180deg);
+  }
+
+  75% {
+    transform: translate(190%, -5%) rotateY(-180deg);
+  }
+
+  80% {
+    transform: translate(170%, 0) rotateY(-180deg);
+  }
+
+  85% {
+    transform: translate(150%, -5%) rotateY(-180deg);
+  }
+
+  90% {
+    transform: translate(130%, 0) rotateY(-180deg);
+  }
+
+  95% {
+    transform: translate(110%, -5%) rotateY(-180deg);
+  }
+
   100% {
-    transform: translate(240%, 0%);
+    transform: translate(100%, 0) rotateY(-180deg);
   }
 }
 
-@keyframes running-human-fill {
+@keyframes running-eye {
   0% {
-    fill: #e1cbb5;
+    fill: #be6c33;
+    stroke: #be6c33;
+    stroke-width: 0px;
+  }
+
+  10% {
+    fill: #96191a;
+    stroke: #96191a;
+    stroke-width: 3px;
+  }
+
+  50% {
+    fill: #96191a;
+    stroke: #96191a;
+    stroke-width: 3px;
+  }
+
+  60% {
+    fill: #be6c33;
+    stroke: #be6c33;
+    stroke-width: 3px;
   }
 
   100% {
-    fill: #9ea538;
+    fill: #be6c33;
+    stroke: #be6c33;
+    stroke-width: 0px;
   }
 }
+
