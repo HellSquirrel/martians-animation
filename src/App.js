@@ -12,7 +12,7 @@ class App extends Component {
     return (
       <div className="App">
         <BrowserRouter>
-          <div>
+          <div class="navigation">
             <Link to="/images" className="link">
               images
             </Link>

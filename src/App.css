@@ -1,3 +1,7 @@
 .link + .link {
     margin-left: 20px;
 }
+
+.navigation {
+    padding: 20px;
+}
