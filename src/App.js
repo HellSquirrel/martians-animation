@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Link } from "react-router-dom";
 import Images from "./Images";
 import BasicAnimations from "./BasicAnimations";
 import FiltersAnimations from "./FiltersAnimations";
+import ClipAndMaskAnimations from "./ClipAndMaskAnimations";
 
 import "./App.css";
 
@@ -21,6 +22,10 @@ class App extends Component {
             <Link to="/filtersAnimations" className="link">
               filters animations
             </Link>
+
+            <Link to="/maskingAndClipping" className="link">
+              masking and clipping
+            </Link>
           </div>
           <div>
             <Route path="/images" exact component={Images} />
@@ -29,6 +34,11 @@ class App extends Component {
               path="/filtersAnimations"
               exact
               component={FiltersAnimations}
+            />
+            <Route
+              path="/maskingAndClipping"
+              exact
+              component={ClipAndMaskAnimations}
             />
           </div>
         </BrowserRouter>
