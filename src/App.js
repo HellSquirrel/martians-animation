@@ -5,6 +5,7 @@ import BasicAnimations from "./BasicAnimations";
 import FiltersAnimations from "./FiltersAnimations";
 import ClipAndMaskAnimations from "./ClipAndMaskAnimations";
 import ThreeDAnimations from "./ThreeDAnimations";
+import Canvas from "./Canvas";
 
 import "./App.css";
 
@@ -30,6 +31,9 @@ class App extends Component {
             <Link to="/3dAnimations" className="link">
               animations 3d
             </Link>
+            <Link to="/canvas" className="link">
+              canvas
+            </Link>
           </div>
           <div>
             <Route path="/images" exact component={Images} />
@@ -44,7 +48,8 @@ class App extends Component {
               exact
               component={ClipAndMaskAnimations}
             />
-            <Route path="/3dAnimations" exect component={ThreeDAnimations} />
+            <Route path="/3dAnimations" exact component={ThreeDAnimations} />
+            <Route path="/canvas" exact component={Canvas} />
           </div>
         </BrowserRouter>
       </div>
