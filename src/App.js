@@ -4,6 +4,7 @@ import Images from "./Images";
 import BasicAnimations from "./BasicAnimations";
 import FiltersAnimations from "./FiltersAnimations";
 import ClipAndMaskAnimations from "./ClipAndMaskAnimations";
+import ThreeDAnimations from "./ThreeDAnimations";
 
 import "./App.css";
 
@@ -12,7 +13,7 @@ class App extends Component {
     return (
       <div className="App">
         <BrowserRouter>
-          <div class="navigation">
+          <div className="navigation">
             <Link to="/images" className="link">
               images
             </Link>
@@ -25,6 +26,9 @@ class App extends Component {
 
             <Link to="/maskingAndClipping" className="link">
               masking and clipping
+            </Link>
+            <Link to="/3dAnimations" className="link">
+              animations 3d
             </Link>
           </div>
           <div>
@@ -40,6 +44,7 @@ class App extends Component {
               exact
               component={ClipAndMaskAnimations}
             />
+            <Route path="/3dAnimations" exect component={ThreeDAnimations} />
           </div>
         </BrowserRouter>
       </div>

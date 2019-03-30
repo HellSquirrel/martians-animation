@@ -1,0 +1,28 @@
+.threeDContainer {
+  padding: 100px;
+}
+
+.face {
+  width: 200px;
+  height: 200px;
+  background: url("./animated/colors.jpg") 50% 50% / cover no-repeat;
+  border: 1px solid #265b16;
+  transition: all 300ms ease-in-out;
+  transform: rotateX(0) rotateY(0) rotateZ(0) translateZ(0);
+}
+
+.rx {
+  transform: rotateX(60deg);
+}
+
+.ry {
+  transform: rotateY(60deg);
+}
+
+.rz {
+  transform: rotateZ(60deg);
+}
+
+.tz {
+  transform: translateZ(100px);
+}
