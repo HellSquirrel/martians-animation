@@ -26,3 +26,30 @@
 .tz {
   transform: translateZ(100px);
 }
+
+.cube {
+  opacity: 0.7;
+  transform-style: preserve-3d;
+}
+
+.cube.face1 {
+  transform: translateY(-50%) translateZ(-100px) rotateX(-90deg);
+}
+
+.cube.face2 {
+  transform: translateY(-200%) translateX(50%) translateZ(-100px)
+    rotateY(-90deg);
+}
+
+.cube.face3 {
+  transform: translateY(-300%) translateX(-50%) translateZ(-100px)
+    rotateY(-90deg);
+}
+
+.cube.face4 {
+  transform: translateY(-450%) translateZ(-100px) rotateX(-90deg);
+}
+
+.cube.face5 {
+  transform: translateY(-500%) translateZ(-200px);
+}
