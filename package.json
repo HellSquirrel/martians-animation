@@ -3,12 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@tensorflow-models/body-pix": "^1.0.0",
+    "@tensorflow/tfjs": "^1.0.3",
     "classnames": "^2.2.6",
     "prettier": "^1.16.4",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "2.1.8"
+    "react-scripts": "2.1.8",
+    "tensor-flow": "^0.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
