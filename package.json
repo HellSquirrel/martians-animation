@@ -6,6 +6,7 @@
     "@tensorflow-models/body-pix": "^1.0.0",
     "@tensorflow/tfjs": "^1.0.3",
     "classnames": "^2.2.6",
+    "mathjs": "^5.8.0",
     "prettier": "^1.16.4",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",

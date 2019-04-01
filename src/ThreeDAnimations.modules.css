@@ -28,7 +28,6 @@
 }
 
 .cube {
-  opacity: 0.7;
   transform-style: preserve-3d;
 }
 
