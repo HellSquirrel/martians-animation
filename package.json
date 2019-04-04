@@ -12,7 +12,8 @@
     "react-dom": "^16.8.5",
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
-    "tensor-flow": "^0.0.1"
+    "tensor-flow": "^0.0.1",
+    "three": "^0.103.0"
   },
   "scripts": {
     "start": "react-scripts start",
