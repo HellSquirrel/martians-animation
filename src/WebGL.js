@@ -1,27 +1,13 @@
 import React, { useRef } from "react";
-import classNames from "classnames/bind";
-import cs from "./WebGL.module.css";
 
 const THREE = require("three");
 
-const {
-  Scene,
-  PerspectiveCamera,
-  WebGLRenderer,
-  BoxGeometry,
-  MeshBasicMaterial,
-  Mesh,
-  DirectionalLight,
-  MeshStandardMaterial,
-  AmbientLight
-} = THREE;
+const { Scene, PerspectiveCamera, WebGLRenderer, AmbientLight } = THREE;
 
 global.THREE = THREE;
 
 require("three/examples/js/loaders/ColladaLoader");
 require("three/examples/js/controls/OrbitControls");
-
-const cx = classNames.bind(cs);
 
 const width = 400;
 const height = 400;
@@ -34,12 +20,10 @@ const init = canvas => {
     canvas,
     context: canvas.getContext("webgl2")
   });
+
   renderer.setSize(width, height);
   renderer.setClearColor("#e0e0e0");
-  //const light = new DirectionalLight("white", 1);
-  //light.position.set(0, 0, 4);
-  //scene.add(light);
-  scene.add(new AmbientLight('#fff'));
+  scene.add(new AmbientLight("#fff"));
 
   const loader = new THREE.ColladaLoader();
   loader.load("/martians.dae", function(collada) {
@@ -47,14 +31,13 @@ const init = canvas => {
     camera.position.z = 25;
 
     const animate = () => {
-      //collada.scene.rotation.y = collada.scene.rotation.y + Math.PI * 0.002;
       requestAnimationFrame(animate);
       renderer.render(scene, camera);
     };
     animate();
   });
 
-  const controls = new THREE.OrbitControls(camera, canvas);
+  new THREE.OrbitControls(camera, canvas);
 };
 
 const WebGL = () => {
