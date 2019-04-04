@@ -1,1 +1,0 @@
-ffmpeg -i src/images/cat.webp -map_metadata -1 -an -c:v libaom-av1 -crf 24 -b:v 0 -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -strict experimental ./src/images/video.av1.mp4

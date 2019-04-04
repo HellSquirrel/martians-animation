@@ -8,6 +8,7 @@ import ThreeDAnimations from "./ThreeDAnimations";
 import Canvas from "./Canvas";
 import CanvasAnimation from "./CanvasAnimation";
 import WebGL from "./WebGL";
+import TrueWebGL from "./TrueWebGL";
 
 import "./App.css";
 
@@ -42,6 +43,9 @@ class App extends Component {
             <Link to="/webgl" className="link">
               webGL
             </Link>
+            <Link to="trueWebgl" className="link">
+              true webGL
+            </Link>
           </div>
           <div>
             <Route path="/images" exact component={Images} />
@@ -60,6 +64,7 @@ class App extends Component {
             <Route path="/canvas" exact component={Canvas} />
             <Route path="/canvasAnimation" exact component={CanvasAnimation} />
             <Route path="/webgl" component={WebGL} />
+            <Route path="/trueWebgl" component={TrueWebGL} />
           </div>
         </BrowserRouter>
       </div>
