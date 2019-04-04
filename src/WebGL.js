@@ -19,6 +19,7 @@ const {
 global.THREE = THREE;
 
 require("three/examples/js/loaders/ColladaLoader");
+require("three/examples/js/controls/OrbitControls");
 
 const cx = classNames.bind(cs);
 
@@ -27,35 +28,33 @@ const height = 400;
 
 const init = canvas => {
   const scene = new Scene();
-  const camera = new PerspectiveCamera(45, 1, 0.1, 500);
+  const camera = new PerspectiveCamera(45, 1, 1, 500);
 
   const renderer = new WebGLRenderer({
     canvas,
     context: canvas.getContext("webgl2")
   });
   renderer.setSize(width, height);
-  renderer.setClearColor("#000");
-  const geometry = new BoxGeometry(1, 1, 1);
-  var material = new MeshStandardMaterial({ color: "white" });
-  var cube = new Mesh(geometry, material);
-  const light = new DirectionalLight("white", 1);
-  light.position.set(0, 0, 4);
-  scene.add(cube);
-  scene.add(light);
-  scene.add(new AmbientLight("white"));
+  renderer.setClearColor("#e0e0e0");
+  //const light = new DirectionalLight("white", 1);
+  //light.position.set(0, 0, 4);
+  //scene.add(light);
+  scene.add(new AmbientLight('#fff'));
 
   const loader = new THREE.ColladaLoader();
-  loader.load("/model.dae", function(collada) {
+  loader.load("/martians.dae", function(collada) {
     scene.add(collada.scene);
     camera.position.z = 25;
 
     const animate = () => {
-      collada.scene.rotation.x = collada.scene.rotation.x + Math.PI * 0.002;
+      //collada.scene.rotation.y = collada.scene.rotation.y + Math.PI * 0.002;
       requestAnimationFrame(animate);
       renderer.render(scene, camera);
     };
     animate();
   });
+
+  const controls = new THREE.OrbitControls(camera, canvas);
 };
 
 const WebGL = () => {
