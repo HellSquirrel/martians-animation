@@ -1,7 +1,8 @@
 import React, { useRef } from "react";
 import vertexShaderSource from "./shaders/vert.glsl";
 import fragmentShaderSource from "./shaders/frag.glsl";
-import math from "mathjs";
+import { nRandom } from "./utils/random";
+import martians from "./images/cat.jpg";
 
 const width = 400;
 const height = 400;
@@ -33,22 +34,26 @@ const createProgram = (gl, vertexShader, fragmentShader) => {
   gl.deleteProgram(program);
 };
 
-const nRandom = (n, min = 0, max = 0) =>
-  [...Array(n)].map(() => math.random(min, max));
-
-const drawTriangle = (gl, colorLoc) => {
+const drawTriangle = gl => {
   gl.bufferData(
     gl.ARRAY_BUFFER,
     new Float32Array(nRandom(6, -1, 1)),
     gl.STATIC_DRAW
   );
-  gl.uniform4f(colorLoc, Math.random(), Math.random(), Math.random(), 1);
 
   gl.drawArrays(gl.TRIANGLES, 0, 3);
 };
 
-const init = canvas => {
+const loadImage = async () =>
+  new Promise(resolve => {
+    const img = new Image();
+    img.src = martians;
+    img.onload = () => resolve(img);
+  });
+
+const init = async canvas => {
   // init
+  const img = await loadImage();
   const gl = canvas.getContext("webgl2");
   const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
   const fragmentShader = createShader(
@@ -57,40 +62,66 @@ const init = canvas => {
     fragmentShaderSource
   );
   const program = createProgram(gl, vertexShader, fragmentShader);
+
+  // attributes
   const positionAttributeLocation = gl.getAttribLocation(program, "a_position");
-  const colorLocation = gl.getUniformLocation(program, "u_color");
+  const texCoordAttributeLocation = gl.getAttribLocation(program, "a_texCoord");
 
-  // supply data
+  // uniforms
+  const imageLocation = gl.getUniformLocation(program, "u_image");
 
-  const positionBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-
-  // read data
+  // positions
   const vertexArray = gl.createVertexArray();
   gl.bindVertexArray(vertexArray);
+
+  const positionBuffer = gl.createBuffer();
   gl.enableVertexAttribArray(positionAttributeLocation);
-  const size = 2; // 2 components per iteration
-  const type = gl.FLOAT;
-  const normalize = false;
-  const stride = 0;
-  const offset = 0;
-  gl.vertexAttribPointer(
-    positionAttributeLocation,
-    size,
-    type,
-    normalize,
-    stride,
-    offset
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+
+  // textures
+  const texCoordBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array([
+      0.0,
+      0.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      1.0
+    ]),
+    gl.STATIC_DRAW
   );
 
+  gl.enableVertexAttribArray(texCoordAttributeLocation);
+  gl.vertexAttribPointer(texCoordAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+
+  const texture = gl.createTexture();
+  gl.activeTexture(gl.TEXTURE0 + 0);
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
   // prepare to draw
   gl.viewport(0, 0, width, height);
   gl.clearColor(0, 0, 0, 0);
   gl.clear(gl.COLOR_BUFFER_BIT);
   gl.useProgram(program);
   gl.bindVertexArray(vertexArray);
+  gl.uniform1i(imageLocation, 0);
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
-  nRandom(10).forEach(() => drawTriangle(gl, colorLocation));
+  nRandom(10).forEach(() => drawTriangle(gl, imageLocation));
 };
 
 const TrueWebGL = () => {
