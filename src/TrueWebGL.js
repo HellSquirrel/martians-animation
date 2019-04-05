@@ -44,42 +44,8 @@ const drawTriangle = gl => {
   gl.drawArrays(gl.TRIANGLES, 0, 3);
 };
 
-const loadImage = async () =>
-  new Promise(resolve => {
-    const img = new Image();
-    img.src = martians;
-    img.onload = () => resolve(img);
-  });
-
-const init = async canvas => {
-  // init
-  const img = await loadImage();
-  const gl = canvas.getContext("webgl2");
-  const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-  const fragmentShader = createShader(
-    gl,
-    gl.FRAGMENT_SHADER,
-    fragmentShaderSource
-  );
-  const program = createProgram(gl, vertexShader, fragmentShader);
-
-  // attributes
-  const positionAttributeLocation = gl.getAttribLocation(program, "a_position");
+const setUpTextures = (gl, program, img) => {
   const texCoordAttributeLocation = gl.getAttribLocation(program, "a_texCoord");
-
-  // uniforms
-  const imageLocation = gl.getUniformLocation(program, "u_image");
-
-  // positions
-  const vertexArray = gl.createVertexArray();
-  gl.bindVertexArray(vertexArray);
-
-  const positionBuffer = gl.createBuffer();
-  gl.enableVertexAttribArray(positionAttributeLocation);
-  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-  gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
-
-  // textures
   const texCoordBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
   gl.bufferData(
@@ -112,6 +78,44 @@ const init = async canvas => {
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+};
+
+const loadImage = async () =>
+  new Promise(resolve => {
+    const img = new Image();
+    img.src = martians;
+    img.onload = () => resolve(img);
+  });
+
+const init = async canvas => {
+  // init
+  const img = await loadImage();
+  const gl = canvas.getContext("webgl2");
+  const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+  const fragmentShader = createShader(
+    gl,
+    gl.FRAGMENT_SHADER,
+    fragmentShaderSource
+  );
+  const program = createProgram(gl, vertexShader, fragmentShader);
+
+  // attributes
+  const positionAttributeLocation = gl.getAttribLocation(program, "a_position");
+
+  // uniforms
+  const imageLocation = gl.getUniformLocation(program, "u_image");
+
+  // positions
+  const vertexArray = gl.createVertexArray();
+  gl.bindVertexArray(vertexArray);
+
+  const positionBuffer = gl.createBuffer();
+  gl.enableVertexAttribArray(positionAttributeLocation);
+  gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+  gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+
+  // textures
+  setUpTextures(gl, program, img);
   // prepare to draw
   gl.viewport(0, 0, width, height);
   gl.clearColor(0, 0, 0, 0);
