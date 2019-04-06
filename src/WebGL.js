@@ -2,7 +2,13 @@ import React, { useRef } from "react";
 
 const THREE = require("three");
 
-const { Scene, PerspectiveCamera, WebGLRenderer, AmbientLight } = THREE;
+const {
+  Scene,
+  PerspectiveCamera,
+  WebGLRenderer,
+  AmbientLight,
+  DirectionalLight
+} = THREE;
 
 global.THREE = THREE;
 
@@ -23,10 +29,11 @@ const init = canvas => {
 
   renderer.setSize(width, height);
   renderer.setClearColor("#e0e0e0");
-  scene.add(new AmbientLight("#fff"));
+  scene.add(new AmbientLight("#fff", 0.5));
+  scene.add(new DirectionalLight("fff", 0.5));
 
   const loader = new THREE.ColladaLoader();
-  loader.load("/martians.dae", function(collada) {
+  loader.load("/exploded.dae", function(collada) {
     scene.add(collada.scene);
     camera.position.z = 25;
 
