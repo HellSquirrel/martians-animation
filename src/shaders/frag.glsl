@@ -12,5 +12,5 @@ out vec4 outColor;
 
 void main() {
   // Look up a color from the texture.
-  outColor = texture(u_image, v_texCoord);
+  outColor = texture(u_image, v_texCoord).bgra;
 }

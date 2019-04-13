@@ -52,7 +52,7 @@ const init = (canvas, shouldUpdate) => {
 
       if (shouldUpdate) {
         const positions = geometry.attributes.position.array;
-        const step = 0.0001;
+        const step = 0.001;
         console.log(geometry.attributes.position.array[0]);
         for (let i = 40000; i < 45000; i++) {
           positions[i] += math.random(-1 * step, step);

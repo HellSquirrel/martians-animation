@@ -2,47 +2,11 @@ import React, { useRef } from "react";
 import vertexShaderSource from "./shaders/vert.glsl";
 import fragmentShaderSource from "./shaders/frag.glsl";
 import { nRandom } from "./utils/random";
+import { drawRandomRect, createShader, createProgram } from "./utils/draw";
 import martians from "./images/cat.jpg";
 
 const width = 400;
 const height = 400;
-
-const createShader = (gl, type, source) => {
-  const shader = gl.createShader(type);
-  gl.shaderSource(shader, source);
-  gl.compileShader(shader);
-  const success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
-  if (success) {
-    return shader;
-  }
-
-  console.error(gl.getShaderInfoLog(shader));
-  gl.deleteShader(shader);
-};
-
-const createProgram = (gl, vertexShader, fragmentShader) => {
-  const program = gl.createProgram();
-  gl.attachShader(program, vertexShader);
-  gl.attachShader(program, fragmentShader);
-  gl.linkProgram(program);
-  const success = gl.getProgramParameter(program, gl.LINK_STATUS);
-  if (success) {
-    return program;
-  }
-
-  console.error(gl.getProgramInfoLog(program));
-  gl.deleteProgram(program);
-};
-
-const drawTriangle = gl => {
-  gl.bufferData(
-    gl.ARRAY_BUFFER,
-    new Float32Array(nRandom(6, -1, 1)),
-    gl.STATIC_DRAW
-  );
-
-  gl.drawArrays(gl.TRIANGLES, 0, 3);
-};
 
 const setUpTextures = (gl, program, img) => {
   const texCoordAttributeLocation = gl.getAttribLocation(program, "a_texCoord");
@@ -125,7 +89,7 @@ const init = async canvas => {
   gl.uniform1i(imageLocation, 0);
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
 
-  nRandom(10).forEach(() => drawTriangle(gl, imageLocation));
+  nRandom(10).forEach(() => drawRandomRect(gl, imageLocation));
 };
 
 const TrueWebGL = () => {
