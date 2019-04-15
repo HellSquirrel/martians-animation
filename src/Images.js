@@ -4,6 +4,7 @@ import MartiansJPG from "./images/martians.jpg";
 import MartiansPNG from "./images/martians.png";
 import MartiansProgressiveJPG from "./images/martians.progressive.jpg";
 import MartiansWEBP from "./images/martians.webp";
+import MartiansGIF from "./images/aniamted.gif";
 import MartiansVIDEO from "./images/martians.av1.mp4";
 import CatJPG from "./images/cat.jpg";
 import CatWEBP from "./images/cat.webp";
@@ -33,7 +34,13 @@ const Images = () => (
     </div>
     <div className="plate">
       WEBP
-      <img src={MartiansWEBP} />
+      <div>
+        <img src={MartiansWEBP} />
+      </div>
+    </div>
+    <div className="plate">
+      GIF
+      <img src={MartiansGIF} className="gif" />
     </div>
     <div className="plate">
       AV1
