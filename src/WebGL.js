@@ -37,7 +37,11 @@ const imported = [
     cameraPosition: [0, 0, 100],
     position: [0, -10, 0],
     fov: [45, width / height, 1, 500],
-    clearColor: "#000"
+    clearColor: "#000",
+    cp: {
+      name: "bocharova",
+      url: "https://sketchfab.com/apsnu"
+    }
   },
   {
     name: "Cloud",
@@ -48,6 +52,10 @@ const imported = [
     pointLight: {
       color: 0xffffff,
       position: [1, 1, 1]
+    },
+    cp: {
+      name: "aneeshaynee",
+      url: "https://sketchfab.com/aneeshaynee"
     }
   },
 
@@ -60,6 +68,10 @@ const imported = [
     pointLight: {
       color: 0xffffff,
       position: [10, 10, 10]
+    },
+    cp: {
+      name: "linart",
+      url: "https://sketchfab.com/linart"
     }
   }
 ];
@@ -176,6 +188,7 @@ const addGLTFModel = (canvas, model) => {
 const WebGL = () => {
   const canvas = useRef(null);
   const [currentModel, setModel] = useState("martians");
+  const modelData = imported.find(d => d.name === currentModel);
 
   return (
     <React.Fragment>
@@ -212,7 +225,37 @@ const WebGL = () => {
           {model.name}
         </button>
       ))}
-      <canvas width={width} height={height} ref={canvas} />
+      <div style={{ position: "relative", display: "inline-flex" }}>
+        <canvas width={width} height={height} ref={canvas} />
+        {modelData && (
+          <div
+            style={{
+              position: "absolute",
+              bottom: 5,
+              right: 5,
+              color: "#fff",
+              fontSize: 12
+            }}
+          >
+            {modelData.name} by{" "}
+            <a
+              href={modelData.cp.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {modelData.cp.name}
+            </a>{" "}
+            is licensed under{" "}
+            <a
+              href="https://creativecommons.org/licenses/by/4.0/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              CC Attribution
+            </a>
+          </div>
+        )}
+      </div>
     </React.Fragment>
   );
 };
