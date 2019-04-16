@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import math from "mathjs";
+import Controls from "./Controls";
 
 const THREE = require("three");
 
@@ -192,7 +193,7 @@ const WebGL = () => {
 
   return (
     <React.Fragment>
-      <div>
+      <Controls>
         <button
           onClick={() => {
             currentModelName = "martians";
@@ -226,7 +227,7 @@ const WebGL = () => {
             {model.name}
           </button>
         ))}
-      </div>
+      </Controls>
 
       <div style={{ position: "relative", display: "inline-flex" }}>
         <canvas width={width} height={height} ref={canvas} />

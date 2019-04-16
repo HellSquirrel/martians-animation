@@ -3,6 +3,7 @@ import classNames from "classnames/bind";
 import cs from "./CanvasAnimation.module.css";
 import martians from "./animated/martiansStroke.svg";
 import math from "mathjs";
+import Controls from "./Controls";
 
 const cx = classNames.bind(cs);
 
@@ -58,9 +59,11 @@ const CanvasAnimation = () => {
   );
   return (
     <React.Fragment>
-      <button onClick={() => draw(canvas.current, img.current, mesh, 0)}>
-        draw
-      </button>
+      <Controls>
+        <button onClick={() => draw(canvas.current, img.current, mesh, 0)}>
+          draw
+        </button>
+      </Controls>
       <canvas
         className={cx("canvas")}
         ref={canvas}

@@ -3,6 +3,7 @@ import classNames from "classnames/bind";
 import cs from "./Canvas.module.css";
 import martians from "./animated/martians.svg";
 import * as bodyPix from "@tensorflow-models/body-pix";
+import Controls from "./Controls";
 
 const cx = classNames.bind(cs);
 
@@ -141,6 +142,15 @@ const Canvas = () => {
 
   return (
     <React.Fragment>
+      <Controls>
+        <button onClick={() => getUserMedia(canvas.current, video.current)}>
+          Take a photo
+        </button>
+        <button onClick={() => loadPhoto(canvas.current, link.current)}>
+          Load photo
+        </button>
+        <a className={cx("link")} ref={link} />
+      </Controls>
       <canvas
         className={cx("canvas")}
         ref={canvas}
@@ -154,13 +164,6 @@ const Canvas = () => {
         width={width}
         height={height}
       />
-      <button onClick={() => getUserMedia(canvas.current, video.current)}>
-        Take a photo
-      </button>
-      <button onClick={() => loadPhoto(canvas.current, link.current)}>
-        Load photo
-      </button>
-      <a className={cx("link")} ref={link} />
     </React.Fragment>
   );
 };

@@ -1,8 +1,5 @@
-.basicAnimations {
-  padding: 20px;
-}
-
 .martians {
+  padding-left: 200px;
   width: 300px;
   height: 300px;
   overflow: visible;

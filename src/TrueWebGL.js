@@ -4,6 +4,7 @@ import fragmentShaderSource from "./shaders/frag.glsl";
 import { nRandom } from "./utils/random";
 import { drawRandomRect, createShader, createProgram } from "./utils/draw";
 import martians from "./images/cat.jpg";
+import Controls from "./Controls";
 
 const width = 400;
 const height = 400;
@@ -97,7 +98,9 @@ const TrueWebGL = () => {
 
   return (
     <React.Fragment>
-      <button onClick={() => init(canvas.current)}>GO!</button>
+      <Controls>
+        <button onClick={() => init(canvas.current)}>GO!</button>
+      </Controls>
       <canvas width={width} height={height} ref={canvas} />
     </React.Fragment>
   );
