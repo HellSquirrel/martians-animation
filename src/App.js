@@ -17,7 +17,7 @@ class App extends Component {
     return (
       <div className="App">
         <BrowserRouter>
-          <div className="navigation">
+          <nav className="navigation">
             <Link to="/images" className="link">
               images
             </Link>
@@ -34,11 +34,11 @@ class App extends Component {
             <Link to="/3dAnimations" className="link">
               animations 3d
             </Link>
-            <Link to="/canvas" className="link">
-              canvas
-            </Link>
             <Link to="/canvasAnimation" className="link">
               canvas animation
+            </Link>
+            <Link to="/canvas" className="link">
+              canvas
             </Link>
             <Link to="/webgl" className="link">
               webGL
@@ -46,8 +46,8 @@ class App extends Component {
             <Link to="trueWebgl" className="link">
               true webGL
             </Link>
-          </div>
-          <div>
+          </nav>
+          <div className="content">
             <Route path="/images" exact component={Images} />
             <Route path="/basicAnimations" exact component={BasicAnimations} />
             <Route
@@ -61,8 +61,8 @@ class App extends Component {
               component={ClipAndMaskAnimations}
             />
             <Route path="/3dAnimations" exact component={ThreeDAnimations} />
-            <Route path="/canvas" exact component={Canvas} />
             <Route path="/canvasAnimation" exact component={CanvasAnimation} />
+            <Route path="/canvas" exact component={Canvas} />
             <Route path="/webgl" component={WebGL} />
             <Route path="/trueWebgl" component={TrueWebGL} />
           </div>

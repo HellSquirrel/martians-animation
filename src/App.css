@@ -1,7 +1,22 @@
+.App {
+  display: flex;
+  min-height: 100vh;
+}
+
 .link + .link {
-    margin-left: 20px;
+  margin-top: 20px;
+}
+
+.link {
+  display: block;
 }
 
 .navigation {
-    padding: 20px;
+  padding: 20px;
+  background: #d6d6d6;
+  flex: 0 0 150px;
+}
+
+.content {
+  flex: 1 0 auto;
 }
