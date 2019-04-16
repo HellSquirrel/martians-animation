@@ -8,18 +8,40 @@ const {
   PerspectiveCamera,
   WebGLRenderer,
   AmbientLight,
-  DirectionalLight
+  DirectionalLight,
+  Clock,
+  Vector3
 } = THREE;
 
 global.THREE = THREE;
 
 require("three/examples/js/loaders/ColladaLoader");
-require("three/examples/js/loaders/OBJLoader");
-require("three/examples/js/loaders/MTLLoader");
+require("three/examples/js/loaders/GLTFLoader");
 require("three/examples/js/controls/OrbitControls");
 
 const width = 800;
 const height = 800;
+
+const defaults = {
+  position: [0, 0, 0]
+};
+
+const imported = [
+  {
+    name: "Elf",
+    url: "elf/scene.gltf",
+    position: [0, 0, 0]
+  },
+
+  {
+    name: "Cloud",
+    url: "cloud/scene.gltf"
+  },
+  {
+    name: "Crypt",
+    url: "crypt/scene.gltf"
+  }
+];
 
 const addMartiansModel = (canvas, shouldUpdate, modelUrl) => {
   const scene = new Scene();
@@ -72,34 +94,53 @@ const addMartiansModel = (canvas, shouldUpdate, modelUrl) => {
   new THREE.OrbitControls(camera, canvas);
 };
 
-const addObjModel = (canvas, _, url) => {
+const addGLTFModel = (canvas, model) => {
+  let mixer = null;
+  const clock = new Clock();
   const scene = new Scene();
-  const camera = new PerspectiveCamera(45, 1, 1, 10000);
+  const camera = new PerspectiveCamera(45, width / height, 0, 1000);
 
   const renderer = new WebGLRenderer({
     canvas,
     context: canvas.getContext("webgl2")
   });
 
+  renderer.gammaOutput = true;
+  renderer.physicallyCorrectLights = true;
   renderer.setSize(width, height);
   renderer.setClearColor("#e0e0e0");
-  camera.position.set(300, 600, 500);
-  scene.add(new AmbientLight("#fff", 1));
-  scene.add(new THREE.PointLight( 0xffffff, 0.8 ));
-  console.log("done");
+
+  scene.add(new THREE.AmbientLight(0x222222));
+  camera.position.set(100, 100, 100);
+
+  const spot = new THREE.SpotLight(0xffffff, 1);
+  spot.position.set(5, 10, 5);
+  spot.angle = 0.5;
+  spot.penumbra = 0.75;
+  spot.intensity = 100;
+  spot.decay = 2;
+
+  scene.add(spot);
+
   new THREE.OrbitControls(camera, canvas);
 
-  new THREE.MTLLoader().load(`${url}.mtl`, function(materials) {
-    materials.preload();
-    console.log(materials);
-    new THREE.OBJLoader()
-      .setMaterials(materials)
-      .load(`${url}.obj`, function(object) {
-        scene.add(object);
-      });
+  new THREE.GLTFLoader().load(model.url, obj => {
+    scene.add(obj.scene);
+    const animations = obj.animations;
+    if (animations && animations.length) {
+      mixer = new THREE.AnimationMixer(obj.scene);
+      for (let i = 0; i < animations.length; i++) {
+        const animation = animations[i];
+        const action = mixer.clipAction(animation);
+        action.play();
+        console.log(action);
+      }
+    }
   });
+
   const animate = () => {
     requestAnimationFrame(animate);
+    if (mixer) mixer.update(clock.getDelta());
     renderer.render(scene, camera);
   };
   animate();
@@ -129,23 +170,18 @@ const WebGL = () => {
           Add noise to martians
         </button>
       )}
-      <button
-        onClick={() => {
-          addObjModel(canvas.current, false, "nier");
-          setModel("lanscape");
-        }}
-      >
-        Obj 1
-      </button>
-      <button
+
+      {imported.map(model => (
+        <button
+          id={model.name}
           onClick={() => {
-            addObjModel(canvas.current, false, "2b");
+            addGLTFModel(canvas.current, { ...defaults, ...model });
             setModel("lanscape");
           }}
-      >
-        Obj 2
-      </button>
-
+        >
+          {model.name}
+        </button>
+      ))}
       <canvas width={width} height={height} ref={canvas} />
     </React.Fragment>
   );
