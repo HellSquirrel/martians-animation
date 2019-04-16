@@ -2,6 +2,9 @@
   "name": "martians-animation",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "10.x"
+  },
   "dependencies": {
     "@babel/core": "7.2.2",
     "@svgr/webpack": "4.1.0",
@@ -26,6 +29,7 @@
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-jsx-a11y": "6.1.2",
     "eslint-plugin-react": "7.12.4",
+    "express": "^4.16.4",
     "file-loader": "2.0.0",
     "fs-extra": "7.0.1",
     "html-webpack-plugin": "4.0.0-alpha.2",
@@ -43,6 +47,7 @@
     "postcss-preset-env": "6.5.0",
     "postcss-safe-parser": "4.0.1",
     "prettier": "^1.16.4",
+    "ramda": "^0.26.1",
     "raw-loader": "^2.0.0",
     "react": "^16.8.5",
     "react-app-polyfill": "^0.2.2",

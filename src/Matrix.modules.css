@@ -1,0 +1,36 @@
+.lab {
+  position: absolute;
+}
+
+.original {
+  filter: grayscale(100%);
+  position: absolute;
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+}
+
+.transformed {
+  transition: transform 200ms;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.matrices {
+  padding: 30px 0;
+  display: flex;
+  position: relative;
+  padding-top: 320px;
+  z-index: 1;
+}
+
+.matrixInput {
+  padding: 0 30px;
+}
+
+.input {
+  width: 30px;
+  height: 30px;
+  margin: 5px;
+}

@@ -10,6 +10,7 @@ import Canvas from "./Canvas";
 import CanvasAnimation from "./CanvasAnimation";
 import WebGL from "./WebGL";
 import TrueWebGL from "./TrueWebGL";
+import Matrix from "./Matrix";
 
 import "./App.css";
 
@@ -37,6 +38,9 @@ class App extends Component {
             </Link>
             <Link to="/3dAnimations" className="link">
               animations 3d
+            </Link>
+            <Link to="/matrix" className="link">
+              matrix
             </Link>
             <Link to="/canvasAnimation" className="link">
               canvas animation
@@ -66,6 +70,7 @@ class App extends Component {
               component={ClipAndMaskAnimations}
             />
             <Route path="/3dAnimations" exact component={ThreeDAnimations} />
+            <Route path="/matrix" exact component={Matrix} />
             <Route path="/canvasAnimation" exact component={CanvasAnimation} />
             <Route path="/canvas" exact component={Canvas} />
             <Route path="/webgl" component={WebGL} />
