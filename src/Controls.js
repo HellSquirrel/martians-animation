@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames/bind";
-import cs from "./Matrix.modules.css";
+import cs from "./Controls.module.css";
 const cx = classNames.bind(cs);
 
 const Controls = ({ children }) => {

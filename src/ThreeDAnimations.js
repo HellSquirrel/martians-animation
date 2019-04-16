@@ -17,19 +17,19 @@ const ThreeDAnimations = () => {
         <button onClick={() => setAnimation("rz")}>Rotate Z</button>
         <button onClick={() => setAnimation("tz")}>Translate Z</button>
         <button onClick={() => setAnimation("cube")}>Cube</button>
+        <input
+          type="number"
+          value={perspective}
+          onChange={({ currentTarget }) => setPerspective(currentTarget.value)}
+        />
+        <input
+          type="text"
+          value={perspectiveOrigin}
+          onChange={({ currentTarget }) =>
+            setPerspectiveOrigin(currentTarget.value)
+          }
+        />
       </Controls>
-      <input
-        type="number"
-        value={perspective}
-        onChange={({ currentTarget }) => setPerspective(currentTarget.value)}
-      />
-      <input
-        type="text"
-        value={perspectiveOrigin}
-        onChange={({ currentTarget }) =>
-          setPerspectiveOrigin(currentTarget.value)
-        }
-      />
       <div
         className="threeDContainer"
         style={{
