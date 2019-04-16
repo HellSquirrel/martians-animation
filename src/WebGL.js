@@ -21,6 +21,8 @@ require("three/examples/js/controls/OrbitControls");
 const width = 800;
 const height = 800;
 
+let currentModelName = null;
+
 const defaults = {
   position: [0, 0, 0],
   cameraPosition: [0, 1, 100],
@@ -84,7 +86,6 @@ const addMartiansModel = (canvas, shouldUpdate, modelUrl) => {
 
     collada.scene.traverse(el => {
       if (el.isMesh) {
-        console.log(el.material);
         geometry = el.geometry;
       }
     });
@@ -92,20 +93,25 @@ const addMartiansModel = (canvas, shouldUpdate, modelUrl) => {
     camera.position.z = 20;
     collada.scene.rotation.x = (-1 * Math.PI) / 4;
     const animate = () => {
-      requestAnimationFrame(animate);
+      if (
+        currentModelName === "martians" ||
+        currentModelName === "martiansExplode"
+      ) {
+        requestAnimationFrame(animate);
 
-      if (shouldUpdate) {
-        const positions = geometry.attributes.position.array;
-        const step = 0.001;
-        for (let i = 40000; i < 45000; i++) {
-          positions[i] += math.random(-1 * step, step);
-          positions[i + 1] += math.random(-1 * step, step);
-          positions[i + 2] += math.random(-1 * step, step);
+        if (shouldUpdate) {
+          const positions = geometry.attributes.position.array;
+          const step = 0.001;
+          for (let i = 40000; i < 45000; i++) {
+            positions[i] += math.random(-1 * step, step);
+            positions[i + 1] += math.random(-1 * step, step);
+            positions[i + 2] += math.random(-1 * step, step);
+          }
+          geometry.attributes.position.needsUpdate = true;
         }
-        geometry.attributes.position.needsUpdate = true;
-      }
 
-      renderer.render(scene, camera);
+        renderer.render(scene, camera);
+      }
     };
     animate();
   });
@@ -142,7 +148,6 @@ const addGLTFModel = (canvas, model) => {
   new THREE.OrbitControls(camera, canvas);
 
   new THREE.GLTFLoader().load(model.url, obj => {
-
     scene.add(obj.scene);
     obj.scene.position.set(...model.position);
 
@@ -154,15 +159,16 @@ const addGLTFModel = (canvas, model) => {
         const animation = animations[i];
         const action = mixer.clipAction(animation);
         action.play();
-        console.log(action);
       }
     }
   });
 
   const animate = () => {
-    requestAnimationFrame(animate);
-    if (mixer) mixer.update(clock.getDelta());
-    renderer.render(scene, camera);
+    if (model.name === currentModelName) {
+      requestAnimationFrame(animate);
+      if (mixer) mixer.update(clock.getDelta());
+      renderer.render(scene, camera);
+    }
   };
   animate();
 };
@@ -175,17 +181,19 @@ const WebGL = () => {
     <React.Fragment>
       <button
         onClick={() => {
+          currentModelName = "martians";
           addMartiansModel(canvas.current, false, "/exploded.dae");
           setModel("martians");
         }}
       >
         Add Martians
       </button>
-      {currentModel === "martians" && (
+      {currentModel === ("martians" || "martiansExplode") && (
         <button
           onClick={() => {
+            currentModelName = "martiansExplode";
             addMartiansModel(canvas.current, true, "/exploded.dae");
-            setModel("martians");
+            setModel("martiansExplode");
           }}
         >
           Add noise to martians
@@ -196,8 +204,9 @@ const WebGL = () => {
         <button
           key={model.name}
           onClick={() => {
+            currentModelName = model.name;
             addGLTFModel(canvas.current, { ...defaults, ...model });
-            setModel("lanscape");
+            setModel(model.name);
           }}
         >
           {model.name}
