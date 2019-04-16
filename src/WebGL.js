@@ -192,39 +192,42 @@ const WebGL = () => {
 
   return (
     <React.Fragment>
-      <button
-        onClick={() => {
-          currentModelName = "martians";
-          addMartiansModel(canvas.current, false, "/exploded.dae");
-          setModel("martians");
-        }}
-      >
-        Add Martians
-      </button>
-      {currentModel === ("martians" || "martiansExplode") && (
+      <div>
         <button
           onClick={() => {
-            currentModelName = "martiansExplode";
-            addMartiansModel(canvas.current, true, "/exploded.dae");
-            setModel("martiansExplode");
+            currentModelName = "martians";
+            addMartiansModel(canvas.current, false, "/exploded.dae");
+            setModel("martians");
           }}
         >
-          Add noise to martians
+          Add Martians
         </button>
-      )}
+        {currentModel === ("martians" || "martiansExplode") && (
+          <button
+            onClick={() => {
+              currentModelName = "martiansExplode";
+              addMartiansModel(canvas.current, true, "/exploded.dae");
+              setModel("martiansExplode");
+            }}
+          >
+            Add noise to martians
+          </button>
+        )}
 
-      {imported.map(model => (
-        <button
-          key={model.name}
-          onClick={() => {
-            currentModelName = model.name;
-            addGLTFModel(canvas.current, { ...defaults, ...model });
-            setModel(model.name);
-          }}
-        >
-          {model.name}
-        </button>
-      ))}
+        {imported.map(model => (
+          <button
+            key={model.name}
+            onClick={() => {
+              currentModelName = model.name;
+              addGLTFModel(canvas.current, { ...defaults, ...model });
+              setModel(model.name);
+            }}
+          >
+            {model.name}
+          </button>
+        ))}
+      </div>
+
       <div style={{ position: "relative", display: "inline-flex" }}>
         <canvas width={width} height={height} ref={canvas} />
         {modelData && (
