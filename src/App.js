@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import Images from "./Images";
+import Progressive from "./Progressive";
 import BasicAnimations from "./BasicAnimations";
 import FiltersAnimations from "./FiltersAnimations";
 import ClipAndMaskAnimations from "./ClipAndMaskAnimations";
@@ -20,6 +21,9 @@ class App extends Component {
           <nav className="navigation">
             <Link to="/images" className="link">
               images
+            </Link>
+            <Link to="/progressive" className="link">
+              progressive
             </Link>
             <Link to="/basicAnimations" className="link">
               basic animations
@@ -49,6 +53,7 @@ class App extends Component {
           </nav>
           <div className="content">
             <Route path="/images" exact component={Images} />
+            <Route path="/progressive" exact component={Progressive} />
             <Route path="/basicAnimations" exact component={BasicAnimations} />
             <Route
               path="/filtersAnimations"
