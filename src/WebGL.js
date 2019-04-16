@@ -9,8 +9,7 @@ const {
   WebGLRenderer,
   AmbientLight,
   DirectionalLight,
-  Clock,
-  Vector3
+  Clock
 } = THREE;
 
 global.THREE = THREE;
@@ -23,23 +22,43 @@ const width = 800;
 const height = 800;
 
 const defaults = {
-  position: [0, 0, 0]
+  position: [0, 0, 0],
+  cameraPosition: [0, 1, 100],
+  clearColor: "#e0e0e0",
+  fov: [45, width / height, 1, 100]
 };
 
 const imported = [
   {
-    name: "Elf",
-    url: "elf/scene.gltf",
-    position: [0, 0, 0]
+    name: "Crypt",
+    url: "crypt/scene.gltf",
+    cameraPosition: [0, 0, 100],
+    position: [0, -10, 0],
+    fov: [45, width / height, 1, 500],
+    clearColor: "#000"
+  },
+  {
+    name: "Cloud",
+    url: "cloud/scene.gltf",
+    position: [0, -1, 0],
+    cameraPosition: [0, 1, 4],
+    clearColor: "#000",
+    pointLight: {
+      color: 0xffffff,
+      position: [1, 1, 1]
+    }
   },
 
   {
-    name: "Cloud",
-    url: "cloud/scene.gltf"
-  },
-  {
-    name: "Crypt",
-    url: "crypt/scene.gltf"
+    name: "Elf",
+    url: "elf/scene.gltf",
+    fov: [45, width / height, 1, 500],
+    position: [0, -16, 0],
+    clearColor: "#2a2a2a",
+    pointLight: {
+      color: 0xffffff,
+      position: [10, 10, 10]
+    }
   }
 ];
 
@@ -98,7 +117,7 @@ const addGLTFModel = (canvas, model) => {
   let mixer = null;
   const clock = new Clock();
   const scene = new Scene();
-  const camera = new PerspectiveCamera(45, width / height, 0, 1000);
+  const camera = new PerspectiveCamera(...model.fov);
 
   const renderer = new WebGLRenderer({
     canvas,
@@ -108,25 +127,27 @@ const addGLTFModel = (canvas, model) => {
   renderer.gammaOutput = true;
   renderer.physicallyCorrectLights = true;
   renderer.setSize(width, height);
-  renderer.setClearColor("#e0e0e0");
+  renderer.setClearColor(model.clearColor);
 
-  scene.add(new THREE.AmbientLight(0x222222));
-  camera.position.set(100, 100, 100);
+  camera.position.set(...model.cameraPosition);
+  scene.add(new THREE.AmbientLight("#fff"));
 
-  const spot = new THREE.SpotLight(0xffffff, 1);
-  spot.position.set(5, 10, 5);
-  spot.angle = 0.5;
-  spot.penumbra = 0.75;
-  spot.intensity = 100;
-  spot.decay = 2;
-
-  scene.add(spot);
+  if (model.pointLight) {
+    const { color, position } = model.pointLight;
+    const pointLight = new THREE.PointLight(color);
+    pointLight.position.set(...position);
+    scene.add(pointLight);
+  }
 
   new THREE.OrbitControls(camera, canvas);
 
   new THREE.GLTFLoader().load(model.url, obj => {
+
     scene.add(obj.scene);
+    obj.scene.position.set(...model.position);
+
     const animations = obj.animations;
+
     if (animations && animations.length) {
       mixer = new THREE.AnimationMixer(obj.scene);
       for (let i = 0; i < animations.length; i++) {
@@ -173,7 +194,7 @@ const WebGL = () => {
 
       {imported.map(model => (
         <button
-          id={model.name}
+          key={model.name}
           onClick={() => {
             addGLTFModel(canvas.current, { ...defaults, ...model });
             setModel("lanscape");
