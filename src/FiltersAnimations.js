@@ -8,7 +8,6 @@ const cx = classNames.bind(cs);
 
 const FiltersAnimations = () => {
   const [animation, setAnimation] = useState(null);
-  console.log(cs[animation]);
   return (
     <div className={cx("filtersAnimations")}>
       <Controls>

@@ -1,9 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
 import math from "mathjs";
-import Controls from "./Controls";
-import Canvas from "./Canvas";
+import classNames from "classnames/bind";
 import image from "./panorama/street.jpg";
 import martiansSvg from "./images/martians.svg";
+
+import styles from "./Generative.module.css";
+const cx = classNames.bind(styles);
 
 const THREE = require("three");
 let isUserInteracting = false,
@@ -11,7 +13,7 @@ let isUserInteracting = false,
   onMouseDownMouseY = 0,
   lon = 0,
   onMouseDownLon = 0,
-  lat = 0,
+  lat = 20,
   onMouseDownLat = 0,
   phi = 0,
   theta = 0;
@@ -46,8 +48,6 @@ const targetACamera = camera => {
     500 * Math.cos(phi),
     500 * Math.sin(phi) * Math.sin(theta)
   );
-
-  console.log(vec);
   camera.lookAt(vec);
 };
 
@@ -131,21 +131,34 @@ const pointerEnd = () => {
 const Generative = () => {
   const canvas = useRef(null);
   const [currentState, setStep] = useState(0);
+  useEffect(() => init(canvas.current), []);
 
   return (
     <React.Fragment>
-      <Controls>
-        <button onClick={() => init(canvas.current)}>One</button>
-      </Controls>
-      <div style={{ position: "relative", display: "inline-flex" }}>
-        <canvas
-          onMouseDown={pointerStart}
-          onMouseMove={pointerMove}
-          onMouseUp={pointerEnd}
-          width={width}
-          height={height}
-          ref={canvas}
-        />
+      <div className={cx("content")}>
+        <header className={cx("header")}>Wikipedia text about Paris</header>
+        <article className={cx("paris")}>
+          <canvas
+            onMouseDown={pointerStart}
+            onMouseMove={pointerMove}
+            onMouseUp={pointerEnd}
+            width={width}
+            height={height}
+            ref={canvas}
+          />
+          <div className={cx("text")}>
+            Paris (French pronunciation: ​[paʁi] (About this soundlisten)) is
+            the capital and most populous city of France, with an area of 105
+            square kilometres (41 square miles) and an official estimated
+            population of 2,140,526 residents as of 1 January 2019. Since the
+            17th century, Paris has been one of Europe's major centres of
+            finance, diplomacy, commerce, fashion, science, and the arts. The
+            City of Paris is the centre and seat of government of the
+            Île-de-France, or Paris Region, which has an estimated official 2019
+            population of 12,213,364, or about 18 percent of the population of
+            France.
+          </div>
+        </article>
       </div>
     </React.Fragment>
   );
