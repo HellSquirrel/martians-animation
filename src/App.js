@@ -9,6 +9,7 @@ import ThreeDAnimations from "./ThreeDAnimations";
 import Canvas from "./Canvas";
 import CanvasAnimation from "./CanvasAnimation";
 import WebGL from "./WebGL";
+import Generative from "./Generative";
 import TrueWebGL from "./TrueWebGL";
 import Matrix from "./Matrix";
 
@@ -51,8 +52,11 @@ class App extends Component {
             <Link to="/webgl" className="link">
               webGL
             </Link>
-            <Link to="trueWebgl" className="link">
+            <Link to="/trueWebgl" className="link">
               true webGL
+            </Link>
+            <Link to="/generative" className="link">
+              generative
             </Link>
           </nav>
           <div className="content">
@@ -75,6 +79,7 @@ class App extends Component {
             <Route path="/canvas" exact component={Canvas} />
             <Route path="/webgl" component={WebGL} />
             <Route path="/trueWebgl" component={TrueWebGL} />
+            <Route path="/generative" component={Generative} />
           </div>
         </BrowserRouter>
       </div>
