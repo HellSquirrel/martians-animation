@@ -3,6 +3,7 @@ import math from "mathjs";
 import Controls from "./Controls";
 import Canvas from "./Canvas";
 import image from "./panorama/street.jpg";
+import martiansSvg from "./images/martians.svg";
 
 const THREE = require("three");
 let isUserInteracting = false,
@@ -32,36 +33,32 @@ global.THREE = THREE;
 require("three/examples/js/loaders/GLTFLoader");
 
 const width = 800;
-const height = 400;
+const height = 450;
 
-let currentModelName = null;
-
-const defaults = {
-  position: [0, 0, 0],
-  cameraPosition: [0, 1, 100],
-  clearColor: "#e0e0e0",
-  fov: [45, width / height, 1, 100]
-};
+let camera = null;
 
 const targetACamera = camera => {
   lat = Math.max(-85, Math.min(85, lat));
   phi = THREE.Math.degToRad(90 - lat);
   theta = THREE.Math.degToRad(lon);
-  camera.target.x = 500 * Math.sin(phi) * Math.cos(theta);
-  camera.target.y = 500 * Math.cos(phi);
-  camera.target.z = 500 * Math.sin(phi) * Math.sin(theta);
-  camera.lookAt(camera.target);
+  const vec = new Vector3(
+    500 * Math.sin(phi) * Math.cos(theta),
+    500 * Math.cos(phi),
+    500 * Math.sin(phi) * Math.sin(theta)
+  );
+
+  console.log(vec);
+  camera.lookAt(vec);
 };
 
 const init = canvas => {
   const scene = new Scene();
-  const camera = new PerspectiveCamera(
+  camera = new PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
     0.1,
     1000
   );
-  camera.target = new THREE.Vector3(0, 0, 0);
   scene.add(new THREE.AmbientLight("#fff"));
 
   const renderer = new WebGLRenderer({
@@ -74,6 +71,7 @@ const init = canvas => {
   renderer.setClearColor("#000");
   const geometry = new THREE.SphereBufferGeometry(700, 60, 40);
   geometry.scale(-1, 1, 1);
+  targetACamera(camera);
   camera.position.z = 0;
   const texture = new TextureLoader().load(image);
   const material = new MeshBasicMaterial({
@@ -81,18 +79,24 @@ const init = canvas => {
   });
 
   const mesh = new Mesh(geometry, material);
+  const plain = new Mesh(
+    new THREE.PlaneBufferGeometry(5, 5, 32),
+    new THREE.MeshBasicMaterial({
+      map: new TextureLoader().load(martiansSvg),
+      side: THREE.DoubleSide
+    })
+  );
 
   scene.add(mesh);
+  scene.add(plain);
+  plain.rotation.x = (-1 * Math.PI) / 2;
+  plain.rotation.z = plain.position.y = -20;
   const animate = () => {
+    //plain.rotation.x += 0.1;
+
     requestAnimationFrame(animate);
     if (isUserInteracting) {
-      lat = Math.max(-85, Math.min(85, lat));
-      phi = THREE.Math.degToRad(90 - lat);
-      theta = THREE.Math.degToRad(lon);
-      camera.target.x = 500 * Math.sin(phi) * Math.cos(theta);
-      camera.target.y = 500 * Math.cos(phi);
-      camera.target.z = 500 * Math.sin(phi) * Math.sin(theta);
-      camera.lookAt(camera.target);
+      targetACamera(camera);
     }
 
     renderer.render(scene, camera);
@@ -112,31 +116,17 @@ const pointerStart = event => {
 };
 
 const pointerMove = event => {
-  const clientX = event.clientX || event.touches[0].clientX;
-  const clientY = event.clientY || event.touches[0].clientY;
-  lon = (onMouseDownMouseX - clientX) * 0.1 + onMouseDownLon;
-  lat = (clientY - onMouseDownMouseY) * 0.1 + onMouseDownLat;
+  if (isUserInteracting) {
+    const clientX = event.clientX || event.touches[0].clientX;
+    const clientY = event.clientY || event.touches[0].clientY;
+    lon = (onMouseDownMouseX - clientX) * 0.2 + onMouseDownLon;
+    lat = (clientY - onMouseDownMouseY) * 0.2 + onMouseDownLat;
+  }
 };
 
 const pointerEnd = () => {
   isUserInteracting = false;
 };
-
-document.addEventListener(
-  "dragover",
-  function(event) {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = "copy";
-  },
-  false
-);
-document.addEventListener(
-  "dragenter",
-  function() {
-    document.body.style.opacity = 0.5;
-  },
-  false
-);
 
 const Generative = () => {
   const canvas = useRef(null);
