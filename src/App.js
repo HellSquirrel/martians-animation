@@ -10,6 +10,7 @@ import Canvas from "./Canvas";
 import CanvasAnimation from "./CanvasAnimation";
 import WebGL from "./WebGL";
 import Generative from "./Generative";
+import GenerativeParticles from "./Generative.particles";
 import TrueWebGL from "./TrueWebGL";
 import Matrix from "./Matrix";
 
@@ -20,7 +21,7 @@ class App extends Component {
     return (
       <div className="App">
         <BrowserRouter>
-          {window.location.pathname !== "/generative" && (
+          {window.location.pathname.lastIndexOf("generative") === -1 && (
             <nav className="navigation">
               <Link to="/images" className="link">
                 images
@@ -79,6 +80,10 @@ class App extends Component {
             <Route path="/webgl" component={WebGL} />
             <Route path="/trueWebgl" component={TrueWebGL} />
             <Route path="/generative" component={Generative} />
+            <Route
+              path="/generativeParticles"
+              component={GenerativeParticles}
+            />
           </div>
         </BrowserRouter>
       </div>
