@@ -24,7 +24,7 @@ global.THREE = THREE;
 
 const width = window.innerWidth;
 const height = window.innerHeight;
-const totalParticles = 500;
+const totalParticles = 100;
 const r = 7;
 
 let camera = null;
@@ -33,6 +33,7 @@ const createDots = positions => {
   const pMaterial = new THREE.PointsMaterial({
     color: 0xffffff,
     size: 0.05,
+    opacity: 0.5,
     blending: THREE.AdditiveBlending,
     transparent: true
     //sizeAttenuation: false
@@ -46,7 +47,6 @@ const createDots = positions => {
   );
 
   pGeometry.computeBoundingSphere();
-  //pGeometry.setDrawRange(0, 0);
 
   return new THREE.Points(pGeometry, pMaterial);
 };
@@ -69,22 +69,22 @@ const createLines = positions => {
 };
 
 const getPositions = totalParticles => {
-  const positions = new Float32Array(totalParticles * 3);
-  for (let i = 0; i < totalParticles; i++) {
-    positions[i] = math.random(-1 * r, r);
-    positions[i + 1] = math.random(-1 * r, r);
-    positions[i + 2] = math.random(-1 * r, r);
+  const pos = new Float32Array(totalParticles * 3);
+  for (let i = 0; i < totalParticles * 3; i++) {
+    pos[i] = math.random(-r, r);
+    pos[i + 1] = math.random(-r, r);
+    pos[i + 2] = math.random(-r, r);
   }
 
-  return positions;
+  return pos;
 };
 
 const getVelocities = totalParticles => {
   return [...Array(totalParticles)].map(e => ({
     velocity: new THREE.Vector3(
       -1 * math.random() * 0.01,
-      -1 * Math.random() * 0.01,
-      -1 * Math.random() * 0.01
+      -1 * math.random() * 0.01,
+      -1 * math.random() * 0.01
     ),
     numConnections: 0
   }));
@@ -112,13 +112,15 @@ const init = canvas => {
 
   const particlesPositions = getPositions(totalParticles);
   const pMesh = createDots(particlesPositions);
-  let positions = new Float32Array(totalParticles * totalParticles);
-  const lMesh = createLines(positions);
+  //let positions = new Float32Array(totalParticles * totalParticles);
+  //const lMesh = createLines(positions);
   const data = getVelocities(totalParticles);
 
   scene.add(pMesh);
+
   // scene.add(lMesh);
   new THREE.OrbitControls(camera, canvas);
+  console.log(pMesh.geometry.attributes.position);
 
   const animate = () => {
     requestAnimationFrame(animate);
@@ -129,11 +131,7 @@ const init = canvas => {
       data[i].numConnections = 0;
     }
     for (let i = 0; i < totalParticles; i++) {
-      // get the particle
       let particleData = data[i];
-      if (i === 0) {
-        console.log(particleData.velocity.x);
-      }
       particlesPositions[i * 3] += particleData.velocity.x;
       particlesPositions[i * 3 + 1] += particleData.velocity.y;
       particlesPositions[i * 3 + 2] += particleData.velocity.z;
@@ -150,30 +148,31 @@ const init = canvas => {
       )
         particleData.velocity.z = -particleData.velocity.z;
       // Check collision
-      for (let j = i + 1; j < totalParticles; j++) {
-        let particleDataB = data[j];
-        let dx = particlesPositions[i * 3] - particlesPositions[j * 3];
-        let dy = particlesPositions[i * 3 + 1] - particlesPositions[j * 3 + 1];
-        let dz = particlesPositions[i * 3 + 2] - particlesPositions[j * 3 + 2];
-        let dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-        if (numConnected < 100) {
-          particleData.numConnections++;
-          particleDataB.numConnections++;
-          let alpha = 1.0;
-          positions[vertexpos++] = particlesPositions[i * 3];
-          positions[vertexpos++] = particlesPositions[i * 3 + 1];
-          positions[vertexpos++] = particlesPositions[i * 3 + 2];
-          positions[vertexpos++] = particlesPositions[j * 3];
-          positions[vertexpos++] = particlesPositions[j * 3 + 1];
-          positions[vertexpos++] = particlesPositions[j * 3 + 2];
-          numConnected++;
-        }
-      }
+      // for (let j = i + 1; j < totalParticles; j++) {
+      //   let particleDataB = data[j];
+      //   let dx = particlesPositions[i * 3] - particlesPositions[j * 3];
+      //   let dy = particlesPositions[i * 3 + 1] - particlesPositions[j * 3 + 1];
+      //   let dz = particlesPositions[i * 3 + 2] - particlesPositions[j * 3 + 2];
+      //   let dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+      //   if (numConnected < 100) {
+      //     particleData.numConnections++;
+      //     particleDataB.numConnections++;
+      //     let alpha = 1.0;
+      //     positions[vertexpos++] = particlesPositions[i * 3];
+      //     positions[vertexpos++] = particlesPositions[i * 3 + 1];
+      //     positions[vertexpos++] = particlesPositions[i * 3 + 2];
+      //     positions[vertexpos++] = particlesPositions[j * 3];
+      //     positions[vertexpos++] = particlesPositions[j * 3 + 1];
+      //     positions[vertexpos++] = particlesPositions[j * 3 + 2];
+      //     numConnected++;
+      //   }
+      // }
     }
-    lMesh.geometry.setDrawRange(0, numConnected * 2);
-    lMesh.geometry.attributes.position.needsUpdate = true;
+    //lMesh.geometry.setDrawRange(0, numConnected * 2);
+    //lMesh.geometry.attributes.position.needsUpdate = true;
     //lMesh.geometry.attributes.color.needsUpdate = true;
     pMesh.geometry.attributes.position.needsUpdate = true;
+    console.log(pMesh.geometry.attributes.position);
 
     renderer.render(scene, camera);
   };
