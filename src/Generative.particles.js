@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import math from "mathjs";
 import classNames from "classnames/bind";
+import svg from "./images/group.svg";
 
 import styles from "./Generative.particles.module.css";
 require("three/examples/js/controls/OrbitControls");
@@ -30,65 +31,19 @@ const r = 7;
 let camera = null;
 
 const createDots = positions => {
-  const pMaterial = new THREE.PointsMaterial({
-    color: 0xffffff,
-    size: 0.05,
-    opacity: 0.5,
-    blending: THREE.AdditiveBlending,
-    transparent: true
-    //sizeAttenuation: false
+  const pMaterial = new THREE.MeshBasicMaterial({
+    map: new TextureLoader().load(svg),
+    side: THREE.DoubleSide
   });
 
-  const pGeometry = new THREE.BufferGeometry();
-  pGeometry.setDrawRange(0, totalParticles);
-  pGeometry.addAttribute(
-    "position",
-    new THREE.BufferAttribute(positions, 3).setDynamic(true)
-  );
-
-  pGeometry.computeBoundingSphere();
-
-  return new THREE.Points(pGeometry, pMaterial);
-};
-
-const createLines = positions => {
-  const lMaterial = new THREE.LineBasicMaterial({
-    //vertexColors: THREE.VertexColors,
-    blending: THREE.AdditiveBlending,
-    transparent: true,
-    opacity: math.random(0, 0.7),
-    color: 0xffffff
-  });
-
-  const lGeometry = new THREE.BufferGeometry();
-  lGeometry.addAttribute(
-    "position",
-    new THREE.BufferAttribute(positions, 3).setDynamic(true)
-  );
-
-  return new THREE.LineSegments(lGeometry, lMaterial);
-};
-
-const getPositions = totalParticles => {
-  const pos = new Float32Array(totalParticles * 3);
-  for (let i = 0; i < totalParticles * 3; i++) {
-    pos[i] = math.random(-r, r);
-    pos[i + 1] = math.random(-r, r);
-    pos[i + 2] = math.random(-r, r);
-  }
-
-  return pos;
-};
-
-const getVelocities = totalParticles => {
-  return [...Array(totalParticles)].map(e => ({
-    velocity: new THREE.Vector3(
-      -1 * math.random() * 0.01,
-      -1 * math.random() * 0.01,
-      -1 * math.random() * 0.01
-    ),
-    numConnections: 0
-  }));
+  // const pMaterial = new THREE.PointsMaterial({
+  //   color: 0xffffff,
+  //   size: 0.05,
+  //   opacity: 0.5,
+  //   blending: THREE.AdditiveBlending,
+  //   transparent: true
+  //   //sizeAttenuation: false
+  // });
 };
 
 const init = canvas => {
@@ -100,82 +55,79 @@ const init = canvas => {
     1000
   );
 
+  // var geometry = new THREE.BoxGeometry(1, 1, 1);
+  // var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+  // var cube = new THREE.Mesh(geometry, material);
+
   scene.add(new THREE.AmbientLight("#fff"));
+  //scene.add(cube);
 
   const renderer = new WebGLRenderer({
     canvas,
     context: canvas.getContext("webgl")
   });
 
+  scene.add(curve());
+
   renderer.setSize(width, height);
   renderer.setPixelRatio(window.devicePixelRatio);
   camera.position.z = 10;
 
-  const particlesPositions = getPositions(totalParticles);
-  const pMesh = createDots(particlesPositions);
-  let positions = new Float32Array(totalParticles * totalParticles * 3);
-  const lMesh = createLines(positions);
-  const data = getVelocities(totalParticles);
-
-  scene.add(pMesh);
-
   //scene.add(lMesh);
   new THREE.OrbitControls(camera, canvas);
-  console.log(pMesh.geometry.attributes.position);
 
   const animate = () => {
     requestAnimationFrame(animate);
     scene.rotation.y += 0.001;
-    let vertexpos = 0;
-    let colorpos = 0;
-    let numConnected = 0;
-    for (let i = 0; i < totalParticles; i++) {
-      data[i].numConnections = 0;
-    }
-    for (let i = 0; i < totalParticles; i++) {
-      let particleData = data[i];
-      particlesPositions[i * 3] += particleData.velocity.x;
-      particlesPositions[i * 3 + 1] += particleData.velocity.y;
-      particlesPositions[i * 3 + 2] += particleData.velocity.z;
-      if (
-        particlesPositions[i * 3 + 1] < -1 * r ||
-        particlesPositions[i * 3 + 1] > r
-      )
-        particleData.velocity.y = -particleData.velocity.y;
-      if (particlesPositions[i * 3] < -1 * r || particlesPositions[i * 3] > r)
-        particleData.velocity.x = -particleData.velocity.x;
-      if (
-        particlesPositions[i * 3 + 2] < -1 * r ||
-        particlesPositions[i * 3 + 2] > r
-      )
-        particleData.velocity.z = -particleData.velocity.z;
-      for (let j = i + 1; j < totalParticles; j++) {
-        let particleDataB = data[j];
-        let dx = particlesPositions[i * 3] - particlesPositions[j * 3];
-        let dy = particlesPositions[i * 3 + 1] - particlesPositions[j * 3 + 1];
-        let dz = particlesPositions[i * 3 + 2] - particlesPositions[j * 3 + 2];
-        let dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-        if (numConnected < 100) {
-          particleData.numConnections++;
-          particleDataB.numConnections++;
-          positions[vertexpos++] = particlesPositions[i * 3];
-          positions[vertexpos++] = particlesPositions[i * 3 + 1];
-          positions[vertexpos++] = particlesPositions[i * 3 + 2];
-          positions[vertexpos++] = particlesPositions[j * 3];
-          positions[vertexpos++] = particlesPositions[j * 3 + 1];
-          positions[vertexpos++] = particlesPositions[j * 3 + 2];
-          numConnected++;
-        }
-      }
-    }
-    //lMesh.geometry.setDrawRange(0, 10000);
-    //lMesh.geometry.attributes.position.needsUpdate = true;
-    pMesh.geometry.attributes.position.needsUpdate = true;
 
     renderer.render(scene, camera);
   };
 
   animate();
+};
+
+const curve = (count = 100, radius = 10) => {
+  var geometry = new THREE.BufferGeometry();
+  const textureLoader = new THREE.TextureLoader();
+  const sprite = textureLoader.load(svg);
+  console.log(sprite);
+
+  const material = new THREE.PointsMaterial({
+    size: 1,
+    map: sprite,
+    depthTest: false
+  });
+  // const material = new THREE.PointsMaterial({
+  //   color: 0x888888
+  // });
+
+  const positions = [];
+  const colors = [];
+  const sizes = [];
+  const color = new THREE.Color();
+
+  for (let i = 0; i < count; i++) {
+    positions.push((Math.random() * 2 - 1) * radius);
+    positions.push((Math.random() * 2 - 1) * radius);
+    positions.push((Math.random() * 2 - 1) * radius);
+    color.setHSL(i / count, 1.0, 0.5);
+    colors.push(color.r, color.g, color.b);
+    sizes.push(20);
+  }
+
+  geometry.addAttribute(
+    "position",
+    new THREE.Float32BufferAttribute(positions, 3)
+  );
+  geometry.addAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
+  geometry.addAttribute(
+    "size",
+    new THREE.Float32BufferAttribute(sizes, 1).setDynamic(true)
+  );
+
+  const particles = new THREE.Points(geometry, material);
+
+  return particles;
 };
 
 const Generative = () => {

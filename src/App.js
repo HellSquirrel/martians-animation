@@ -20,72 +20,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <BrowserRouter>
-          {window.location.pathname.lastIndexOf("generative") === -1 && (
-            <nav className="navigation">
-              <Link to="/images" className="link">
-                images
-              </Link>
-              <Link to="/progressive" className="link">
-                progressive
-              </Link>
-              <Link to="/basicAnimations" className="link">
-                basic animations
-              </Link>
-              <Link to="/filtersAnimations" className="link">
-                filters animations
-              </Link>
-
-              <Link to="/maskingAndClipping" className="link">
-                masking and clipping
-              </Link>
-              <Link to="/3dAnimations" className="link">
-                animations 3d
-              </Link>
-              <Link to="/matrix" className="link">
-                matrix
-              </Link>
-              <Link to="/canvasAnimation" className="link">
-                canvas animation
-              </Link>
-              <Link to="/canvas" className="link">
-                canvas
-              </Link>
-              <Link to="/webgl" className="link">
-                webGL
-              </Link>
-              <Link to="/trueWebgl" className="link">
-                true webGL
-              </Link>
-            </nav>
-          )}
-          <div className="content">
-            <Route path="/images" exact component={Images} />
-            <Route path="/progressive" exact component={Progressive} />
-            <Route path="/basicAnimations" exact component={BasicAnimations} />
-            <Route
-              path="/filtersAnimations"
-              exact
-              component={FiltersAnimations}
-            />
-            <Route
-              path="/maskingAndClipping"
-              exact
-              component={ClipAndMaskAnimations}
-            />
-            <Route path="/3dAnimations" exact component={ThreeDAnimations} />
-            <Route path="/matrix" exact component={Matrix} />
-            <Route path="/canvasAnimation" exact component={CanvasAnimation} />
-            <Route path="/canvas" exact component={Canvas} />
-            <Route path="/webgl" component={WebGL} />
-            <Route path="/trueWebgl" component={TrueWebGL} />
-            <Route path="/generative" component={Generative} />
-            <Route
-              path="/generativeParticles"
-              component={GenerativeParticles}
-            />
-          </div>
-        </BrowserRouter>
+        <GenerativeParticles />
       </div>
     );
   }
