@@ -13,6 +13,9 @@ import Generative from "./Generative";
 import GenerativeParticles from "./Generative.particles";
 import TrueWebGL from "./TrueWebGL";
 import Matrix from "./Matrix";
+import SVGMove from "./SVGMove";
+import SVGCompression from "./SVGCompression";
+import SVGMorph from "./Flubber";
 
 import "./App.css";
 
@@ -57,6 +60,15 @@ class App extends Component {
               <Link to="/trueWebgl" className="link">
                 true webGL
               </Link>
+              <Link to="/svgMove" className="link">
+                SVG move along path
+              </Link>
+              <Link to="/svgCompression" className="link">
+                SVG compression
+              </Link>
+              <Link to="/svgMorph" className="link">
+                SVG Morph
+              </Link>
             </nav>
           )}
           <div className="content">
@@ -84,6 +96,9 @@ class App extends Component {
               path="/generativeParticles"
               component={GenerativeParticles}
             />
+            <Route path="/svgMove" component={SVGMove} />
+            <Route path="/svgCompression" component={SVGCompression} />
+            <Route path="/svgMorph" component={SVGMorph} />
           </div>
         </BrowserRouter>
       </div>
