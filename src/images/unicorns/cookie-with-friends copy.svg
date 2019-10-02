@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="913" height="552">
+    <defs>
+        <g id="cookie">
+            <ellipse cx="100" cy="60" fill="#FDC970" rx="100" ry="60"/>
+            <path fill="#794545"
+                    d="..."/>
+        </g>
+    </defs>
+    <use href="#cookie" transform="translate(521 128)"/>
+    <use href="#cookie" transform="translate(500 236)"/>
+    ...
+</svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 565 319">
+    <image height="2388" width="1669" x=".635" xlink:href="data:image/png;base64,iVBORw0KGgoA..." />
+</svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 565 319">
+    <script>console.log('😈')</script>
+    <ellipse cx="282.5" cy="159.5" fill="#FDC970" rx="282.5" ry="159.5"/>
+    <path fill="#794545"
+            d="M196.46 ..." />
+</svg>

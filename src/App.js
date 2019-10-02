@@ -16,6 +16,7 @@ import Matrix from "./Matrix";
 import SVGMove from "./SVGMove";
 import SVGCompression from "./SVGCompression";
 import SVGMorph from "./Flubber";
+import SVGPathAndViewBox from "./SVGPathAndViewBox";
 
 import "./App.css";
 
@@ -69,6 +70,9 @@ class App extends Component {
               <Link to="/svgMorph" className="link">
                 SVG Morph
               </Link>
+              <Link to="/svgPathAndViewBox" className="link">
+                SVG Path and viewBox
+              </Link>
             </nav>
           )}
           <div className="content">
@@ -99,6 +103,7 @@ class App extends Component {
             <Route path="/svgMove" component={SVGMove} />
             <Route path="/svgCompression" component={SVGCompression} />
             <Route path="/svgMorph" component={SVGMorph} />
+            <Route path="/svgPathAndViewBox" component={SVGPathAndViewBox} />
           </div>
         </BrowserRouter>
       </div>
