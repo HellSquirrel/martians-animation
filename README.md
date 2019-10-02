@@ -1,3 +1,3 @@
 # Different animation examples
 
-TODO: add more info
+`yarn start` to run :)
